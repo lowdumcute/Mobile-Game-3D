@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -13,11 +14,13 @@ public class PlayerController : MonoBehaviour
     public float gravity = -9.81f;
 
     private float velocityY;
+    private Animator animator;
 
     void Awake()
     {
         inputActions = new PlayerInputActions();
         controller = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     void OnEnable()
@@ -50,5 +53,16 @@ public class PlayerController : MonoBehaviour
         // Xoay theo hướng di chuyển
         if (move != Vector3.zero)
             transform.forward = move;
+
+        // Gán animation "Run"
+        bool isRunning = move.magnitude > 0;
+        animator.SetBool("Run", isRunning);
+    }
+
+    public void Attack()
+    {
+        animator.SetTrigger("Attack");
+        Debug.Log("Attack triggered!");
+        // Gọi logic tấn công ở đây nếu cần
     }
 }
