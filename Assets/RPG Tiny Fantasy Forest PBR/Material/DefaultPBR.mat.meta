@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 912f2578cb86a0e4c9c457c863f6a7a4
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309458
+  packageName: RPG Tiny Fantasy Forest PBR
+  packageVersion: 1.0
+  assetPath: Assets/RPG Tiny Fantasy Forest PBR/Material/DefaultPBR.mat
+  uploadId: 728445

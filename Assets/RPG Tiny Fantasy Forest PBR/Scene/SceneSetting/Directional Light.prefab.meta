@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: beab2d549a548d24cab39b67d7e368eb
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309458
+  packageName: RPG Tiny Fantasy Forest PBR
+  packageVersion: 1.0
+  assetPath: Assets/RPG Tiny Fantasy Forest PBR/Scene/SceneSetting/Directional Light.prefab
+  uploadId: 728445

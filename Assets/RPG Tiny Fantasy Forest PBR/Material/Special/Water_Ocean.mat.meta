@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b4c8f44c7e43ec8429beca38ed8a6eb3
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309458
+  packageName: RPG Tiny Fantasy Forest PBR
+  packageVersion: 1.0
+  assetPath: Assets/RPG Tiny Fantasy Forest PBR/Material/Special/Water_Ocean.mat
+  uploadId: 728445

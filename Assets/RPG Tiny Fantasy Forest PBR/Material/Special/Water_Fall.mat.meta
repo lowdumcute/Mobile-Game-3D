@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7af774c632214bc4cb684b33a484baf1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309458
+  packageName: RPG Tiny Fantasy Forest PBR
+  packageVersion: 1.0
+  assetPath: Assets/RPG Tiny Fantasy Forest PBR/Material/Special/Water_Fall.mat
+  uploadId: 728445

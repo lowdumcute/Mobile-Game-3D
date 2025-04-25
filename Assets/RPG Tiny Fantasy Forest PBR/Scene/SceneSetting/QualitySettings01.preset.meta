@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 586a0aced563f4144a7c32d28e9d4f60
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 309458
+  packageName: RPG Tiny Fantasy Forest PBR
+  packageVersion: 1.0
+  assetPath: Assets/RPG Tiny Fantasy Forest PBR/Scene/SceneSetting/QualitySettings01.preset
+  uploadId: 728445
