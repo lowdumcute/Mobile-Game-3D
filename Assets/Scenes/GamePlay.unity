@@ -1623,7 +1623,7 @@ MonoBehaviour:
   countdownText: {fileID: 610053560}
   scoreText: {fileID: 1866625658}
   playerTransform: {fileID: 1303707483}
-  gameOverPanel: {fileID: 0}
+  gameOverPanel: {fileID: 697882311}
   isPaused: 0
 --- !u!4 &1308119591
 Transform:
