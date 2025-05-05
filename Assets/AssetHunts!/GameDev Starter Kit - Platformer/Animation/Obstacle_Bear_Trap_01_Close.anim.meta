@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e8ef8b793d1449a4da6642106fe7c618
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 240260
+  packageName: 'GameDev Starter Kit - Platformer [Free Edition]'
+  packageVersion: v1.0.0
+  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Platformer/Animation/Obstacle_Bear_Trap_01_Close.anim
+  uploadId: 749424

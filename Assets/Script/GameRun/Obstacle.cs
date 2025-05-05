@@ -8,7 +8,7 @@ public class Obstacle : MonoBehaviour
         PlayerMovement player = collision.gameObject.GetComponent<PlayerMovement>();
         if (player != null)
         {
-            player.Die();  // Gọi hàm chết
+            StartCoroutine(player.Die());
         }
     }
 }

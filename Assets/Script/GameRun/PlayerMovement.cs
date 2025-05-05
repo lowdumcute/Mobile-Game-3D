@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -46,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
     public void Jump()
     {
         if (!isGrounded) return;
+        AudioManager.Instance.PlayVFX("Jump");
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         animator.SetTrigger("Jump");
@@ -81,10 +83,13 @@ public class PlayerMovement : MonoBehaviour
 
 
     // Gọi khi nhân vật chết
-    public void Die()
-    {
+    public IEnumerator Die()
+    {  
+        AudioManager.Instance.PlayVFX("Hit"); 
         isDead = true;
         rb.linearVelocity = Vector3.zero;
+        animator.SetTrigger("Lose");
+        yield return new WaitForSeconds(2f); // Thời gian hoạt ảnh chết
         GameplayManager.Instance.GameOver();
     }
 }

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 7689c98259309514bae710a35fd155a1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 240260
+  packageName: 'GameDev Starter Kit - Platformer [Free Edition]'
+  packageVersion: v1.0.0
+  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Platformer/Animation/Obstacle_Bear_Trap_01_Idle.anim
+  uploadId: 749424
