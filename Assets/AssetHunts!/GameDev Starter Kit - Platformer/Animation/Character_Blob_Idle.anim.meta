@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 4189f3f56740d1640b01c01df20fd923
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 240260
+  packageName: 'GameDev Starter Kit - Platformer [Free Edition]'
+  packageVersion: v1.0.0
+  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Platformer/Animation/Character_Blob_Idle.anim
+  uploadId: 749424

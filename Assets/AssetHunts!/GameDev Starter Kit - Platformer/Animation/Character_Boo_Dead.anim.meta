@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 52fd0d96e3c5f6a4e8d6712475e6470e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 240260
+  packageName: 'GameDev Starter Kit - Platformer [Free Edition]'
+  packageVersion: v1.0.0
+  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Platformer/Animation/Character_Boo_Dead.anim
+  uploadId: 749424

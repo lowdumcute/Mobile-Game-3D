@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: f051b5304db9b0d4ab4470b9e57bf0f9
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 240260
+  packageName: 'GameDev Starter Kit - Platformer [Free Edition]'
+  packageVersion: v1.0.0
+  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Platformer/Animation/Character_Speedy_Dead.anim
+  uploadId: 749424

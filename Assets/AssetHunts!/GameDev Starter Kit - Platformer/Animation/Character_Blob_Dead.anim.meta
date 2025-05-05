@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d606a1d6d6a99f44ab3a864fa382b8a1
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 240260
+  packageName: 'GameDev Starter Kit - Platformer [Free Edition]'
+  packageVersion: v1.0.0
+  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Platformer/Animation/Character_Blob_Dead.anim
+  uploadId: 749424

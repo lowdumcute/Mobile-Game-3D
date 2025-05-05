@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: fa17c677a71a42847ae0ba8a4ecf07de
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 240260
+  packageName: 'GameDev Starter Kit - Platformer [Free Edition]'
+  packageVersion: v1.0.0
+  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Platformer/Animation/Character_Dev_Jump_C.anim
+  uploadId: 749424

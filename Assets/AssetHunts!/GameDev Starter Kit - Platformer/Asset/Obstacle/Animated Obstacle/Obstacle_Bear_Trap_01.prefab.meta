@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: d0a283d1875d37f4aa1ba5598c279f70
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 240260
+  packageName: 'GameDev Starter Kit - Platformer [Free Edition]'
+  packageVersion: v1.0.0
+  assetPath: Assets/AssetHunts!/GameDev Starter Kit - Platformer/Asset/Obstacle/Animated
+    Obstacle/Obstacle_Bear_Trap_01.prefab
+  uploadId: 749424
