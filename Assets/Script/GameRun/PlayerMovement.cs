@@ -90,6 +90,6 @@ public class PlayerMovement : MonoBehaviour
         rb.linearVelocity = Vector3.zero;
         animator.SetTrigger("Lose");
         yield return new WaitForSeconds(2f); // Thời gian hoạt ảnh chết
-        GameplayManager.Instance.GameOver();
+        StartCoroutine(GameplayManager.Instance.GameOver());
     }
 }
