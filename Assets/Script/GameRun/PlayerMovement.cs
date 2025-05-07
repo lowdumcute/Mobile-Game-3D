@@ -10,6 +10,9 @@ public class PlayerMovement : MonoBehaviour
     public float gravityMultiplier = 2.0f;  // Hệ số trọng lực
     public float slideSpeed = 5f;  // Tốc độ trượt
     public Animator animator;
+    private bool isMovingLane = false;
+    private float laneMoveDuration = 0.2f; // Thời gian chuyển làn
+    private float laneDistance = 1f; // Khoảng cách mỗi làn (z = ±1)
 
     private Rigidbody rb;
     private bool isGrounded = true;
@@ -29,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Start()
     {
+        isDead = false;
         rb = GetComponent<Rigidbody>();
     }
 
@@ -92,4 +96,53 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(2f); // Thời gian hoạt ảnh chết
         StartCoroutine(GameplayManager.Instance.GameOver());
     }
+    public void ResetPlayer()
+    {
+        isDead = false;
+        transform.position = Vector3.zero;
+        rb.linearVelocity = Vector3.zero;
+        animator.Play("Running"); // Nếu có animation mặc định
+    }
+    public void MoveLeft()
+    {
+        if (isDead || isMovingLane) return;
+
+        float currentZ = transform.position.z;
+        if (currentZ >= 1f) return;  // Giới hạn không di chuyển nếu vượt quá z = 1
+
+        Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, currentZ + laneDistance);
+        StartCoroutine(MoveToLane(targetPos));
+    }
+
+    public void MoveRight()
+    {
+        if (isDead || isMovingLane) return;
+
+        float currentZ = transform.position.z;
+        if (currentZ <= -1f) return;  // Giới hạn không di chuyển nếu nhỏ hơn z = -1
+
+        Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, currentZ - laneDistance);
+        StartCoroutine(MoveToLane(targetPos));
+    }
+
+
+    private IEnumerator MoveToLane(Vector3 targetPosition)
+    {
+        isMovingLane = true;
+        float startZ = transform.position.z;
+        float targetZ = targetPosition.z;
+        float elapsed = 0f;
+        while (elapsed < laneMoveDuration)
+        {
+            float currentZ = Mathf.Lerp(startZ, targetZ, elapsed / laneMoveDuration);
+            transform.position = new Vector3(transform.position.x, transform.position.y, currentZ);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.position = new Vector3(transform.position.x, transform.position.y, targetZ);
+        isMovingLane = false;
+    }
+
+
 }

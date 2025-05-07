@@ -3,64 +3,112 @@ using UnityEngine;
 
 public class RoadSpawner : MonoBehaviour
 {
-    public GameObject[] roadPrefabs; // Nhiều prefab đoạn đường
-
-    public int numberOfTiles = 5;         // Số lượng đoạn đường spawn trước
-    public float tileLength = 10f;        // Chiều dài mỗi đoạn đường (theo X)
-    public Transform player;             // Tham chiếu tới Player
+    public GameObject[] roadPrefabs;
+    public int numberOfTiles = 5;
+    public float tileLength = 10f;
+    public Transform player;
 
     private List<GameObject> activeTiles = new List<GameObject>();
-    private float spawnX = 0.0f;          // Vị trí X để spawn đoạn mới
-    private float safeZone = 20.0f;       // Khoảng cách an toàn trước khi spawn đoạn mới
+    private Queue<GameObject> tilePool = new Queue<GameObject>();
 
-    void Start()
+    private float spawnX = 0f;
+    private float safeZone = 20f;
+
+    public void CreatedRoad()
     {
+        spawnX = 0;
         for (int i = 0; i < numberOfTiles; i++)
         {
-            SpawnTile();
+            GameObject tile = GetTileFromPool();
+            tile.transform.position = new Vector3(spawnX, 0, 0);
+            tile.SetActive(true);
+            activeTiles.Add(tile);
+
+            // Gọi spawn obstacle
+            TrySpawnObstacles(tile);
+
+            spawnX += tileLength;
         }
+    }
+
+    public void ResetRoad()
+    {
+        foreach (GameObject tile in activeTiles)
+        {
+            tile.SetActive(false);
+            tilePool.Enqueue(tile);
+        }
+
+        activeTiles.Clear();
+        CreatedRoad();
     }
 
     void Update()
     {
-        // Chỉ xóa tile khi player đã vượt qua tile thứ 2 (index 2 trở lên)
+        if (activeTiles.Count < 3) return;
+
         float deleteThresholdX = activeTiles[2].transform.position.x + tileLength;
 
         if (player.position.x - safeZone > (spawnX - numberOfTiles * tileLength) && player.position.x > deleteThresholdX)
         {
-            SpawnTile();
-            DeleteTile();
+            ReuseTile();
         }
     }
 
-
-    void SpawnTile()
+    void ReuseTile()
     {
-        int randomIndex = Random.Range(0, roadPrefabs.Length);
-        GameObject tile = Instantiate(roadPrefabs[randomIndex], new Vector3(spawnX, 0, 0), Quaternion.identity);
+        GameObject tile = activeTiles[0];
+        activeTiles.RemoveAt(0);
+
+        tile.transform.position = new Vector3(spawnX, 0, 0);
+        tile.SetActive(true);
         activeTiles.Add(tile);
+
+        // Gọi spawn obstacle khi tile di chuyển về phía trước
+        TrySpawnObstacles(tile);
+
         spawnX += tileLength;
     }
 
-    void DeleteTile()
+    GameObject GetTileFromPool()
     {
-        Destroy(activeTiles[0]);
-        activeTiles.RemoveAt(0);
+        GameObject tile;
+
+        if (tilePool.Count > 0)
+        {
+            tile = tilePool.Dequeue();
+        }
+        else
+        {
+            int randomIndex = Random.Range(0, roadPrefabs.Length);
+            tile = Instantiate(roadPrefabs[randomIndex]);
+        }
+
+        return tile;
     }
 
-    // --- Vẽ Gizmo để đo chiều dài tile ---
+    void TrySpawnObstacles(GameObject tile)
+    {
+        ObstacleSpawner spawner = tile.GetComponent<ObstacleSpawner>();
+        if (spawner != null)
+        {
+            spawner.SpawnObstacles();
+        }
+    }
+
+    public List<GameObject> GetActiveTiles()
+    {
+        return activeTiles;
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Vector3 startPoint = transform.position;
         Vector3 endPoint = transform.position + Vector3.right * tileLength;
 
-        // Vẽ đường thẳng đỏ
         Gizmos.DrawLine(startPoint, endPoint);
-
-        // Vẽ một cái box mờ để dễ nhìn
-        Gizmos.color = new Color(1, 0, 0, 0.3f); // Màu đỏ nhạt
-        Gizmos.DrawCube(startPoint + Vector3.right * (tileLength / 2f), new Vector3(tileLength, 1, 5)); 
-        // 5 là độ rộng đường (có thể chỉnh nếu đường bạn to nhỏ khác nhau)
+        Gizmos.color = new Color(1, 0, 0, 0.3f);
+        Gizmos.DrawCube(startPoint + Vector3.right * (tileLength / 2f), new Vector3(tileLength, 1, 5));
     }
 }

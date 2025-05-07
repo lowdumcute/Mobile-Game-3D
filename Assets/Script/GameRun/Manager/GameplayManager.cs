@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class GameplayManager : MonoBehaviour
 {
     public static GameplayManager Instance { get; private set; }
+    [SerializeField]private RoadSpawner roadSpawner;        // Tham chiếu đến RoadSpawner
     public PlayerMovement playerMovement;        // Tham chiếu đến PlayerMovement
     public TextMeshProUGUI countdownText;        // TMP Text đếm ngược
     public TextMeshProUGUI scoreText;            // TMP Text điểm
@@ -17,6 +18,7 @@ public class GameplayManager : MonoBehaviour
     private float startX;
     private bool isDead = false;
     public bool isPaused = false;
+    
     void Awake()
     {
         if (Instance == null)
@@ -34,7 +36,10 @@ public class GameplayManager : MonoBehaviour
 
     IEnumerator StartCountdown()
     {
+        countdownText.text = "Get Ready!";
+        roadSpawner.CreatedRoad();
         yield return new WaitForSeconds(2f);
+        gameOverPanel.SetActive(false);
         countdownText.gameObject.SetActive(true);
         AudioManager.Instance.PlayMusic("CountDown");
         for (int i = 3; i > 0; i--)
@@ -58,7 +63,7 @@ public class GameplayManager : MonoBehaviour
         if (gameStarted && !isDead)
         {
             float distance = playerTransform.position.x - startX;
-            scoreText.text = "Score: " + Mathf.FloorToInt(distance).ToString();
+            scoreText.text = Mathf.FloorToInt(distance).ToString();
         }
     }
 
@@ -70,6 +75,28 @@ public class GameplayManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         gameOverPanel.SetActive(true);
         countdownText.gameObject.SetActive(true);
+    }
+    public void RestartGame()
+    {
+        AudioManager.Instance.PlayVFX("Click");
+        gameOverPanel.GetComponentInChildren<Animator>().SetTrigger("End");
+        playerMovement.ResetPlayer();
+        isDead = false;
+        // Reset player position
+        playerTransform.position = Vector3.zero;
+        // Reset đường cũ
+        foreach (GameObject tile in roadSpawner.GetActiveTiles())
+        {
+            Destroy(tile);
+        }
+        roadSpawner.ResetRoad(); // Gọi hàm này để reset spawnX và tạo lại đường mới
+        StartCoroutine(StartCountdown());
+    }
+    public void BackHome()
+    {
+        AudioManager.Instance.PlayVFX("Click");
+        SceneChangeManager.Instance.LoadScene("MainMenu");
+        AudioManager.Instance.StopMusic();
     }
     public void TogglePausePanel()
     {

@@ -49,7 +49,6 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        PlayMusic("InMenu"); // Phát nhạc nền chính khi bắt đầu
         AudioSettingsPanel.SetActive(false); // Ẩn panel âm thanh khi bắt đầu
     }
     public void ToggleAudioSettingsPanel()
@@ -116,6 +115,13 @@ public class AudioManager : MonoBehaviour
         source.Play();
 
         Destroy(go, clip.length);
+    }
+    public void StopMusic()
+    {
+        if (musicSource != null && musicSource.isPlaying)
+        {
+            musicSource.Stop();
+        }
     }
 
 }
