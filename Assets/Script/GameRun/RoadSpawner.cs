@@ -35,17 +35,30 @@ public class RoadSpawner : MonoBehaviour
     {
         foreach (GameObject tile in activeTiles)
         {
-            tile.SetActive(false);
-            tilePool.Enqueue(tile);
+            if (tile != null)
+            {
+                // Làm sạch obstacle bên trong tile trước khi ẩn nó
+                ObstacleSpawner spawner = tile.GetComponentInChildren<ObstacleSpawner>();
+                if (spawner != null)
+                {
+                    spawner.ClearObstacles();
+                }
+
+                tile.SetActive(false);
+                tilePool.Enqueue(tile);  // Đưa lại vào pool
+            }
         }
 
         activeTiles.Clear();
         CreatedRoad();
     }
 
+
     void Update()
     {
         if (activeTiles.Count < 3) return;
+        // Check null an toàn
+        if (activeTiles[2] == null) return;
 
         float deleteThresholdX = activeTiles[2].transform.position.x + tileLength;
 

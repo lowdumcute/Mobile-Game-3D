@@ -41,10 +41,16 @@ public class ObstacleSpawner : MonoBehaviour
             GameObject obstacle = ObstaclePooler.Instance.GetFromPool(prefabName);
             if (obstacle != null)
             {
-                obstacle.transform.position = spawnPoint.position;
+                // Giữ nguyên giá trị Y cũ
+                Vector3 spawnPos = spawnPoint.position;
+                spawnPos.y = obstacle.transform.position.y;
+
+                obstacle.transform.position = spawnPos;
                 obstacle.transform.SetParent(spawnPoint);
+
                 obstacle.SetActive(true);
             }
+
         }
     }
 
@@ -57,4 +63,17 @@ public class ObstacleSpawner : MonoBehaviour
             (list[i], list[j]) = (list[j], list[i]);
         }
     }
+    public void ClearObstacles()
+    {
+        foreach (Transform spawnPoint in spawnPoints)
+        {
+            for (int i = spawnPoint.childCount - 1; i >= 0; i--)
+            {
+                Transform child = spawnPoint.GetChild(i);
+                child.SetParent(null); // Tách khỏi spawnPoint
+                child.gameObject.SetActive(false); // Ẩn để trả lại pool
+            }
+        }
+    }
+
 }

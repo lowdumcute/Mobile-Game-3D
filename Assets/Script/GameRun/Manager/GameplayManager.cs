@@ -9,8 +9,11 @@ public class GameplayManager : MonoBehaviour
     public static GameplayManager Instance { get; private set; }
     [SerializeField]private RoadSpawner roadSpawner;        // Tham chiếu đến RoadSpawner
     public PlayerMovement playerMovement;        // Tham chiếu đến PlayerMovement
+    [Header("Text")]
     public TextMeshProUGUI countdownText;        // TMP Text đếm ngược
     public TextMeshProUGUI scoreText;            // TMP Text điểm
+    public TextMeshProUGUI highScoreText;
+    [Header("")]
     public Transform playerTransform;            // Vị trí nhân vật
     public GameObject gameOverPanel;            // Panel Game Over
 
@@ -18,6 +21,8 @@ public class GameplayManager : MonoBehaviour
     private float startX;
     private bool isDead = false;
     public bool isPaused = false;
+    private int highScore;
+
     
     void Awake()
     {
@@ -31,8 +36,10 @@ public class GameplayManager : MonoBehaviour
     {
         gameOverPanel.SetActive(false);
         playerMovement.enabled = false;
+        highScore = PlayerPrefs.GetInt("HighScore", 0);
         StartCoroutine(StartCountdown());
     }
+
 
     IEnumerator StartCountdown()
     {
@@ -63,7 +70,7 @@ public class GameplayManager : MonoBehaviour
         if (gameStarted && !isDead)
         {
             float distance = playerTransform.position.x - startX;
-            scoreText.text = Mathf.FloorToInt(distance).ToString();
+            scoreText.text = Mathf.FloorToInt(distance).ToString() + " M";
         }
     }
 
@@ -71,27 +78,51 @@ public class GameplayManager : MonoBehaviour
     {
         isDead = true;
         playerMovement.enabled = false;
+
+        // Tính điểm
+        float distance = playerTransform.position.x - startX;
+        int score = Mathf.FloorToInt(distance);
+
+        // Cập nhật High Score nếu điểm cao hơn
+        if (score > highScore)
+        {
+            highScore = score;
+            PlayerPrefs.SetInt("HighScore", highScore);
+            PlayerPrefs.Save();
+        }
+
         countdownText.text = "Game Over!";
         yield return new WaitForSeconds(1f);
         gameOverPanel.SetActive(true);
-        countdownText.gameObject.SetActive(true);
+        countdownText.gameObject.SetActive(false);
+        highScoreText.text = "High Score: " + highScore.ToString() + " M";
     }
+
     public void RestartGame()
     {
         AudioManager.Instance.PlayVFX("Click");
         gameOverPanel.GetComponentInChildren<Animator>().SetTrigger("End");
         playerMovement.ResetPlayer();
         isDead = false;
+
         // Reset player position
         playerTransform.position = Vector3.zero;
-        // Reset đường cũ
+
+        // Thay vì Destroy, dùng SetActive(false) và đưa lại vào pool
         foreach (GameObject tile in roadSpawner.GetActiveTiles())
         {
-            Destroy(tile);
+            if (tile != null)
+            {
+                tile.SetActive(false);
+            }
         }
-        roadSpawner.ResetRoad(); // Gọi hàm này để reset spawnX và tạo lại đường mới
+
+        // Reset đường (tự clear activeTiles và đưa về pool)
+        roadSpawner.ResetRoad();
+
         StartCoroutine(StartCountdown());
     }
+
     public void BackHome()
     {
         AudioManager.Instance.PlayVFX("Click");

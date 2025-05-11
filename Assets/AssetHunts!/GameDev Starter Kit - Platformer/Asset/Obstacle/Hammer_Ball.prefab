@@ -9,12 +9,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 2.3
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -49,23 +61,68 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 0651f690e12c99e4ca849109f77be742, type: 2}
     - target: {fileID: -6970705723488785979, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 0651f690e12c99e4ca849109f77be742, type: 2}
     - target: {fileID: -2389293526188000665, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: 0651f690e12c99e4ca849109f77be742, type: 2}
     - target: {fileID: 919132149155446097, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
       propertyPath: m_Name
-      value: Obstacle_Hanging_Hammer_Ball_01
+      value: Hammer_Ball
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8472135144251885020}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8888486704512878543}
   m_SourcePrefab: {fileID: 100100000, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
+--- !u!1 &5929610266200457874 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 6b29abb86cd26a045936ef0e2ba131c5, type: 3}
+  m_PrefabInstance: {fileID: 6812640905480011715}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8472135144251885020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5929610266200457874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e5a198b8aba7ea4abe85f0c5c635027, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleName: Hammer_Ball
+--- !u!65 &8888486704512878543
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5929610266200457874}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.8925463, y: 3.4782717, z: 0.90631527}
+  m_Center: {x: -0.0000006556511, y: -1.5617341, z: -0.0000002682209}

@@ -5,34 +5,37 @@ public class PlayerMovement : MonoBehaviour
 {
     public static PlayerMovement Instance { get; private set; }
 
-    public float moveSpeed = 5f;  // Tốc độ di chuyển
-    public float jumpForce = 5f;  // Lực nhảy
-    public float gravityMultiplier = 2.0f;  // Hệ số trọng lực
-    public float slideSpeed = 5f;  // Tốc độ trượt
+    public float moveSpeed = 5f;
+    public float jumpForce = 5f;
+    public float gravityMultiplier = 2.0f;
+    public float airSlideGravityMultiplier = 4.0f; // trọng lực tăng khi slide trên không
+    public float slideSpeed = 5f;
     public Animator animator;
-    private bool isMovingLane = false;
-    private float laneMoveDuration = 0.2f; // Thời gian chuyển làn
-    private float laneDistance = 1f; // Khoảng cách mỗi làn (z = ±1)
 
+    private bool isMovingLane = false;
+    private float laneMoveDuration = 0.2f;
+    private float laneDistance = 1f;
+
+    private CapsuleCollider capsuleCollider;
     private Rigidbody rb;
     private bool isGrounded = true;
     private bool isDead = false;
+    private bool isSliding = false; // biến theo dõi trượt
+    private Vector2 startTouchPosition;
+    private Vector2 endTouchPosition;
+    private float swipeThreshold = 50f;
+
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-        }
+        if (Instance != null && Instance != this) Destroy(gameObject);
+        else Instance = this;
     }
 
     void Start()
     {
         isDead = false;
+        capsuleCollider = GetComponent<CapsuleCollider>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -42,11 +45,36 @@ public class PlayerMovement : MonoBehaviour
 
         transform.Translate(Vector3.right * moveSpeed * Time.deltaTime);
 
+    #if UNITY_EDITOR || UNITY_STANDALONE
+        // Chạy thử bằng chuột
+        if (Input.GetMouseButtonDown(0))
+            startTouchPosition = Input.mousePosition;
+        else if (Input.GetMouseButtonUp(0))
+        {
+            endTouchPosition = Input.mousePosition;
+            DetectSwipe();
+        }
+    #elif UNITY_ANDROID || UNITY_IOS
+        // Trên thiết bị cảm ứng
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            if (touch.phase == TouchPhase.Began)
+                startTouchPosition = touch.position;
+            else if (touch.phase == TouchPhase.Ended)
+            {
+                endTouchPosition = touch.position;
+                DetectSwipe();
+            }
+        }
+    #endif
+
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             Jump();
         }
     }
+
 
     public void Jump()
     {
@@ -54,62 +82,62 @@ public class PlayerMovement : MonoBehaviour
         AudioManager.Instance.PlayVFX("Jump");
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-        animator.SetTrigger("Jump");
+        animator.Play("Jump");
     }
 
     public void Slide()
     {
-        animator.SetBool("Slide", true);
+        isSliding = true;
+        animator.SetBool("Slide",true);
+        capsuleCollider.radius = 0.4f;
+        capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.42f, capsuleCollider.center.z);
+        StartCoroutine(StopSlide());
     }
 
-    public void StopSlide()
+    public IEnumerator StopSlide()
     {
-        animator.SetBool("Slide", false);
+        yield return new WaitForSeconds(0.5f); // Thời gian trượt
+        isSliding = false;
+        animator.SetBool("Slide",false);
+        capsuleCollider.radius = 0.66f;
+        capsuleCollider.center = new Vector3(capsuleCollider.center.x, 0.6f, capsuleCollider.center.z);
     }
 
     void FixedUpdate()
     {
         if (isDead) return;
 
-        Vector3 gravityForce = new Vector3(0, -9.81f * gravityMultiplier, 0);
+        float gravity = -9.81f * (isSliding && !isGrounded ? airSlideGravityMultiplier : gravityMultiplier);
+        Vector3 gravityForce = new Vector3(0, gravity, 0);
         rb.AddForce(gravityForce, ForceMode.Acceleration);
     }
 
-    private void OnCollisionStay(Collision collision)
-    {
-        isGrounded = true;
-    }
+    private void OnCollisionStay(Collision collision) => isGrounded = true;
+    private void OnCollisionExit(Collision collision) => isGrounded = false;
 
-    private void OnCollisionExit(Collision collision)
-    {
-        isGrounded = false;
-    }
-
-
-    // Gọi khi nhân vật chết
     public IEnumerator Die()
-    {  
-        AudioManager.Instance.PlayVFX("Hit"); 
+    {
+        AudioManager.Instance.PlayVFX("Hit");
         isDead = true;
         rb.linearVelocity = Vector3.zero;
-        animator.SetTrigger("Lose");
-        yield return new WaitForSeconds(2f); // Thời gian hoạt ảnh chết
+        animator.Play("Lose");
+        yield return new WaitForSeconds(2f);
         StartCoroutine(GameplayManager.Instance.GameOver());
     }
+
     public void ResetPlayer()
     {
         isDead = false;
         transform.position = Vector3.zero;
         rb.linearVelocity = Vector3.zero;
-        animator.Play("Running"); // Nếu có animation mặc định
+        animator.Play("Running");
     }
+
     public void MoveLeft()
     {
         if (isDead || isMovingLane) return;
-
         float currentZ = transform.position.z;
-        if (currentZ >= 1f) return;  // Giới hạn không di chuyển nếu vượt quá z = 1
-
+        if (currentZ >= 1f) return;
         Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, currentZ + laneDistance);
         StartCoroutine(MoveToLane(targetPos));
     }
@@ -117,14 +145,11 @@ public class PlayerMovement : MonoBehaviour
     public void MoveRight()
     {
         if (isDead || isMovingLane) return;
-
         float currentZ = transform.position.z;
-        if (currentZ <= -1f) return;  // Giới hạn không di chuyển nếu nhỏ hơn z = -1
-
+        if (currentZ <= -1f) return;
         Vector3 targetPos = new Vector3(transform.position.x, transform.position.y, currentZ - laneDistance);
         StartCoroutine(MoveToLane(targetPos));
     }
-
 
     private IEnumerator MoveToLane(Vector3 targetPosition)
     {
@@ -139,10 +164,29 @@ public class PlayerMovement : MonoBehaviour
             elapsed += Time.deltaTime;
             yield return null;
         }
-
         transform.position = new Vector3(transform.position.x, transform.position.y, targetZ);
         isMovingLane = false;
     }
+    private void DetectSwipe()
+    {
+        Vector2 swipeDelta = endTouchPosition - startTouchPosition;
 
+        if (swipeDelta.magnitude > swipeThreshold)
+        {
+            float x = swipeDelta.x;
+            float y = swipeDelta.y;
+
+            if (Mathf.Abs(x) > Mathf.Abs(y))
+            {
+                if (x > 0) MoveRight();
+                else MoveLeft();
+            }
+            else
+            {
+                if (y > 0) Jump();
+                else Slide();
+            }
+        }
+    }
 
 }
