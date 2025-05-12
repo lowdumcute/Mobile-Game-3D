@@ -33,6 +33,8 @@ public class RoadSpawner : MonoBehaviour
 
     public void ResetRoad()
     {
+        spawnX = 0f; // Reset lại vị trí spawn
+
         foreach (GameObject tile in activeTiles)
         {
             if (tile != null)
@@ -50,8 +52,8 @@ public class RoadSpawner : MonoBehaviour
         }
 
         activeTiles.Clear();
-        CreatedRoad();
     }
+
 
 
     void Update()
@@ -94,11 +96,12 @@ public class RoadSpawner : MonoBehaviour
         else
         {
             int randomIndex = Random.Range(0, roadPrefabs.Length);
-            tile = Instantiate(roadPrefabs[randomIndex]);
+            tile = Instantiate(roadPrefabs[randomIndex], transform);
         }
 
         return tile;
     }
+
 
     void TrySpawnObstacles(GameObject tile)
     {

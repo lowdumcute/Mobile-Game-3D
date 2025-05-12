@@ -43,6 +43,7 @@ public class GameplayManager : MonoBehaviour
 
     IEnumerator StartCountdown()
     {
+        scoreText.text = "0 M";
         countdownText.text = "Get Ready!";
         roadSpawner.CreatedRoad();
         yield return new WaitForSeconds(2f);
@@ -108,20 +109,11 @@ public class GameplayManager : MonoBehaviour
         // Reset player position
         playerTransform.position = Vector3.zero;
 
-        // Thay vì Destroy, dùng SetActive(false) và đưa lại vào pool
-        foreach (GameObject tile in roadSpawner.GetActiveTiles())
-        {
-            if (tile != null)
-            {
-                tile.SetActive(false);
-            }
-        }
-
-        // Reset đường (tự clear activeTiles và đưa về pool)
+        // Reset đường - gọi đúng hàm logic reset
         roadSpawner.ResetRoad();
-
         StartCoroutine(StartCountdown());
     }
+
 
     public void BackHome()
     {

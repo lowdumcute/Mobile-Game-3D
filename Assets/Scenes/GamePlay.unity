@@ -362,6 +362,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roadPrefabs:
   - {fileID: 3929051409624237542, guid: f6d4c3f1a716bed449af4451a9d26eb6, type: 3}
+  - {fileID: 3929051409624237542, guid: 313102a8c09bb6143a763426b98e2c90, type: 3}
+  - {fileID: 3929051409624237542, guid: c5de46225b4871f40b3d20b1687cbd97, type: 3}
   numberOfTiles: 7
   tileLength: 10
   player: {fileID: 5188713168226170455}
